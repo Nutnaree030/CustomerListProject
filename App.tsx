@@ -4,8 +4,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import AppLoading from 'expo-app-loading';
 import data from './data.json';
 import { User, userData } from './user-data';
-import * as SplashScreen from 'expo-splash-screen';
 import { Searchbar } from 'react-native-paper';
+import { Badge } from 'react-native-elements'
 import {
   useFonts,
   IBMPlexSansThaiLooped_100Thin,
@@ -16,8 +16,6 @@ import {
   IBMPlexSansThaiLooped_600SemiBold,
   IBMPlexSansThaiLooped_700Bold,
 } from '@expo-google-fonts/ibm-plex-sans-thai-looped';
-
-SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -42,7 +40,6 @@ export default function App() {
     setName('');
   };
 
-
   let [fontsLoaded] = useFonts({
     IBMPlexSansThaiLooped_100Thin,
     IBMPlexSansThaiLooped_200ExtraLight,
@@ -57,60 +54,94 @@ export default function App() {
     return <AppLoading />;
   } else {
     return (
+      // Setting Background Color
       <LinearGradient 
           colors={['#abcdef', '#fedcba']} 
           style={styles.container_bg}
       >
+
+        {/* Top Navbar */}
         <View style={styles.topNav}>
+          <Text id='Navitator' style={styles.navigator}>
           <Image source={require('./assets/Logo.png')} style={styles.itemLogo}/>
-          {/* <Image source={require('./assets/Breadcrumb.png')} style={styles.itemMenu}/> */}
+
+          {/* Logo and menu */}
           <Text 
-            style={[styles.mainButton, { textAlign: 'center', fontSize: 12, marginTop: 10 }]} 
+            style={styles.mainButton} 
           >
             <Image source={require('./assets/Home Icon.png')} style={styles.mainTextButton}/>
             หน้าหลัก
           </Text>
 
-          <Image source={require('./assets/Next Icon.png')} style={[styles.nextTextButton]}/>
+          <Image source={require('./assets/Next Icon.png')} style={styles.nextTextButton}/>
 
           <Text 
-            style={[styles.plannedButton, { textAlign: 'center', fontSize: 12, marginTop: 15 }]} 
+            style={styles.plannedButton} 
           >
             วางแผนการเงิน
           </Text>
-        </View>
+          </Text>
 
+          {/* User Profile and notifications */}
+          <Text id='about-user' style={{ alignItems: 'flex-end' }}>
+            <View>
+              <Image source={require('./assets/pirate cat.png')} style={styles.profileImage}/>
+              <Badge
+                status="primary"
+                containerStyle={{ position: 'absolute', top: 32, right: 9 }}
+              />
+            </View>
+
+            <Text style={styles.textFontRegular}>ไกด์ เงินเพิ่มพูน<Image source={require('./assets/Dropdown Icon.png')} style={[styles.Button, { marginLeft: 5 }]}/></Text>
+
+            <View style={{ marginRight: 5 }}>
+              <Image source={require('./assets/Notification Text.png')} style={[styles.profileImage]}/>
+
+              <Badge
+                status="error"
+                value="34"
+                containerStyle={{ position: 'absolute', top: 20, right: -4 }}
+              />
+            </View>
+          </Text>
+        </View>
+        {/* End Top Navbar */}
+
+        {/* Customer Page */}
         <View style={styles.container_item}>
         <View style={styles.container_init}>
-
+          {/* Header */}
           <View style={styles.container_box}>
-            {/* <Text>Open up App.tsx to start working on your app!</Text> */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={[styles.title]}>
                 <Image source={require('./assets/Next Icon.png')} style={{ marginRight: 10, transform: [{rotate: '180deg'}] }}/>
                 กรอกชื่อลูกค้าที่จะวางแผนการเงิน
               </Text>
               <Text 
-                style={[styles.addButton, { textAlign: 'right', fontSize: 12, marginTop: 4 }]} 
+                style={[styles.Button, { textAlign: 'right', fontSize: 12, marginTop: 4 }]} 
                 onPress={() => setModalVisible(true)}
               >
                 <Image source={require('./assets/Add Icon.png')} style={styles.addTextButton}/>
                 เพิ่ม
               </Text>
-              {/* <Button title="Add User" onPress={() => setModalVisible(true)}/> */}
             </View>
 
+            {/* Search Bar */}
             <View style={styles.searchContainer}>
               <Searchbar
                 placeholder=""
                 onChangeText={setSearchQuery}
                 value={searchQuery}
-                icon={()=><Image source={require('./assets/smile.png')} style={{ height: 10, width: 10, alignSelf: 'center', position: "absolute" }}/>}
+                icon={()=>
+                  <Image source={require('./assets/smile.png')} 
+                          style={{ height: 10, width: 10, alignSelf: 'center', position: "absolute" }}
+                  />}
                 style={styles.searchbar}
                 inputStyle={{minHeight: 0}}
               />
             </View>
             
+            {/* New Customer Section */}
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <View>
                 <Text style={styles.itemText}>ลูกค้าใหม่ / ข้อมูลไม่ครบถ้วน</Text>
@@ -140,17 +171,11 @@ export default function App() {
                     <Image source={require('./assets/Arrow Icon.png')} style={styles.userTextButton}/>
                     เริ่มวางแผน
                   </Text>
-
-                  {/* <Text style={[styles.itemText, { marginLeft: 10 }]}>
-                    เริ่มวางแผน
-                  </Text> */}
-
-                
                 </View>
               )}
             />
 
-
+            {/* Planning Section */}
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <View>
                 <Text style={styles.itemText}>วางแผนการเงิน</Text>
@@ -176,14 +201,14 @@ export default function App() {
                   <Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: 235 }}>
                       <Text 
-                        style={[styles.addButton, { fontSize: 12, color: '#1F87AA', marginTop: 4 }]} 
+                        style={[styles.Button, { fontSize: 12, color: '#1F87AA', marginTop: 4 }]} 
                       >
                         <Image source={require('./assets/Write Icon.png')} style={[styles.addTextButton]}/>
                         แก้ไขแผน
                       </Text>
 
                       <Text 
-                        style={[styles.userButton, { textAlign: 'right', fontSize: 12, marginTop: 4, width: 130, color: 'white' }]} 
+                        style={[styles.userButton, { textAlign: 'right', fontSize: 12, marginTop: 4, width: 140, color: 'white' }]} 
                         onPress={() => setModalVisible(true)}
                       >
                         <Image source={require('./assets/Info Icon.png')} style={styles.userTextButton}/>
@@ -191,12 +216,6 @@ export default function App() {
                       </Text>
                     </View>
                   </Text>
-
-                  {/* <Text style={[styles.itemText, { marginLeft: 10 }]}>
-                    เริ่มวางแผน
-                  </Text> */}
-
-                
                 </View>
               )}
             />
@@ -204,7 +223,9 @@ export default function App() {
           
         </View>
         </View>
+        {/* End Customer Page */}
 
+        {/* Adding New User Modal */}
         <Modal
           animationType="slide"
           transparent={true}
@@ -216,15 +237,12 @@ export default function App() {
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
               <Text style={styles.title}>เพิ่มลูกค้า</Text>
               <Text 
-                style={[styles.addButton, { textAlign: 'right', fontSize: 12, marginTop: 4 }]} 
+                style={[styles.Button, { textAlign: 'right', fontSize: 12, marginTop: 4 }]} 
                 onPress={() => setModalVisible(false)}
               >
                 X
               </Text>
-              {/* <Button title="Add User" onPress={() => setModalVisible(true)}/> */}
             </View>
-              {/* <Text style={{flexDirection: 'row-reverse', alignItems: 'flex-start', justifyContent: 'flex-end'}}>X</Text> */}
-              {/* <Text style={styles.modalTitle}>เพิ่มลูกค้า</Text> */}
 
               <TextInput
                 style={styles.input}
@@ -250,18 +268,11 @@ export default function App() {
                         บันทึก
                       </Text>
                   </View>
-                {/* <Button title="ปิด" onPress={() => setModalVisible(false)} />
-                <Button
-                  title={'บันทึก'}
-                  onPress={createUser}
-                  color={'#1F87AA'}
-                >
-                  บันทึก
-                </Button> */}
               </View>
             </View>
           </View>
         </Modal>
+        {/* End Adding New User Modal */}
       </LinearGradient>
     );
   }
@@ -269,10 +280,14 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  textFontRegular: {
+    fontFamily: 'IBMPlexSansThaiLooped_400Regular'
+  },
+  textFontBold: {
+    fontFamily: 'IBMPlexSansThaiLooped_700Bold'
+  },
   container_bg: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
     width: '100%',
     height: '100%',
     padding: Platform.OS === 'web' ? 20 : 10,
@@ -292,13 +307,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '90%',
     height: '90%',
-    // marginTop: 30,
     borderRadius: 10
   },
   container_box: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
     width: '100%',
     height: '100%',
     padding: Platform.OS === 'web' ? 20 : 10,
@@ -311,13 +323,12 @@ const styles = StyleSheet.create({
     fontFamily: 'IBMPlexSansThaiLooped_400Regular',
     fontSize: 18,
     fontWeight: 'bold',
-    // marginBottom: 20,
+    color: '#1F87AA'
   },
   itemContainer: {
     fontFamily: 'IBMPlexSansThaiLooped_100Thin',
     padding: 5,
     marginBottom: 5,
-    // backgroundColor: '#f4f4f4',
     borderRadius: 8,
     width: '100%',
   },
@@ -350,53 +361,50 @@ const styles = StyleSheet.create({
     marginLeft: 10
   },
   topNav: { 
+    flexDirection: 'row',
     overflow: 'hidden',
     alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-  },
-  buttons: {
-    // flexDirection: 'row',
-    flexDirection: 'row-reverse',
-    alignItems: 'flex-start',
-    // justifyContent: 'flex-start',
     justifyContent: 'space-between',
   },
-  addButton: {
-    // flexDirection: 'row',
+  navigator: { 
+    justifyContent: 'space-between', 
+    flexDirection: 'row', 
+    alignItems: 'flex-start', 
+    textAlign: 'center'
+  },
+  buttons: {
     flexDirection: 'row-reverse',
     alignItems: 'flex-start',
-    // justifyContent: 'flex-start',
+    justifyContent: 'space-between',
+  },
+  Button: {
+    fontFamily: 'IBMPlexSansThaiLooped_400Regular',
+    flexDirection: 'row-reverse',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
   },
   addTextButton: {
     borderWidth: 1,
     alignSelf: 'flex-end',
-    // overflow: 'hidden',
-    // alignItems: 'flex-start',
-    // justifyContent: 'flex-start',
     flexDirection: 'row',
     borderColor: 'transparent',
     height: 10,
     width: 20,
     resizeMode: 'contain',
     marginLeft: 10,
-    fontSize: 10
+    fontSize: 10,
+    fontFamily: 'IBMPlexSansThaiLooped_400Regular'
   },
   closeButton: {
-    // flexDirection: 'row',
     marginLeft: 20,
     flexDirection: 'row-reverse',
     alignItems: 'flex-start',
-    // justifyContent: 'flex-start',
     justifyContent: 'space-between',
+    fontFamily: 'IBMPlexSansThaiLooped_400Regular'
   },
   nextTextButton: {
     borderWidth: 1,
     alignSelf: 'flex-start',
-    // overflow: 'hidden',
-    // alignItems: 'flex-start',
-    // justifyContent: 'flex-start',
     flexDirection: 'row',
     borderColor: 'transparent',
     height: 10,
@@ -407,18 +415,13 @@ const styles = StyleSheet.create({
     fontSize: 10
   },
   accessButton: {
-    // flexDirection: 'row',
     flexDirection: 'row-reverse',
     alignItems: 'flex-start',
-    // justifyContent: 'flex-start',
     justifyContent: 'space-between',
   },
   accessTextButton: {
     borderWidth: 1,
     alignSelf: 'flex-end',
-    // overflow: 'hidden',
-    // alignItems: 'flex-start',
-    // justifyContent: 'flex-start',
     flexDirection: 'row',
     borderColor: 'transparent',
     height: 10,
@@ -428,65 +431,64 @@ const styles = StyleSheet.create({
     fontSize: 10
   },
   mainButton: {
-    // flexDirection: 'row',
     flexDirection: 'row-reverse',
     alignItems: 'flex-start',
-    // justifyContent: 'flex-start',
     justifyContent: 'space-between',
+    textAlign: 'center', 
+    fontSize: 12, 
+    marginTop: 0, 
+    overflow: 'hidden',
     backgroundColor: '#fff',
     marginLeft: 10,
     borderRadius: 60,
     height: 30,
-    width: 90,
+    width: 100,
   },
   mainTextButton: {
     borderWidth: 1,
-    // alignSelf: 'flex-start',
-    // overflow: 'hidden',
     alignItems: 'flex-start',
-    // justifyContent: 'flex-start',
     flexDirection: 'row',
     borderColor: 'transparent',
     height: 10,
     width: 20,
     resizeMode: 'contain',
-    // marginLeft: 10,
     fontSize: 10,
-    marginTop: 10
+    marginTop: 10,
+    fontFamily: 'IBMPlexSansThaiLooped_400Regular'
   },
   plannedButton: {
     flexDirection: 'row-reverse',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     backgroundColor: 'transparent',
+    textAlign: 'center', 
     marginLeft: 5,
     borderRadius: 60,
     height: 30,
     width: 90,
+    fontSize: 12,
+    fontFamily: 'IBMPlexSansThaiLooped_400Regular'
   },
   userButton: {
-    // flexDirection: 'row',
     flexDirection: 'row-reverse',
     alignItems: 'flex-start',
-    // justifyContent: 'flex-start',
     justifyContent: 'space-between',
     backgroundColor: '#1F87AA',
     padding: 10,
     width: 100,
-    borderRadius: 4
+    borderRadius: 4,
+    fontFamily: 'IBMPlexSansThaiLooped_400Regular'
   },
   userTextButton: {
     borderWidth: 1,
     alignSelf: 'flex-end',
-    // overflow: 'hidden',
-    // alignItems: 'flex-start',
-    // justifyContent: 'flex-start',
     flexDirection: 'row',
     borderColor: 'transparent',
     height: 10,
     width: 20,
     resizeMode: 'contain',
     fontSize: 10,
+    fontFamily: 'IBMPlexSansThaiLooped_400Regular'
   },
   modalOverlay: {
     flex: 1,
@@ -514,6 +516,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     borderRadius: 4,
     backgroundColor: 'white',
+    fontFamily: 'IBMPlexSansThaiLooped_400Regular',
   },
   modalButtons: {
     flexDirection: 'row',
@@ -558,6 +561,7 @@ const styles = StyleSheet.create({
   searchbar: {
     backgroundColor: 'white',
     marginBottom: 10,
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
+    fontFamily: 'IBMPlexSansThaiLooped_400Regular'
   },
 });
